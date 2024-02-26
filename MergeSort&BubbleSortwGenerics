@@ -1,0 +1,75 @@
+import java.util.*;
+
+// Compare Bubble Sort and MergeSort runtimes
+public class MergeBubbleGenerics {
+    public static void main(String[] args) throws Exception {
+        Integer array[] = {6, 3, 1, 2, 3, 6, 69, 43, 55, 23};
+
+        // Test runtime for bubbleSort
+        long startBubble = System.nanoTime();
+        bubbleSort(array);
+        System.out.println(Arrays.toString(array));
+        long endBubble = System.nanoTime();
+        System.out.println("bubbleSort elapsed time in nano seconds: " + (endBubble - startBubble));
+
+        System.out.println();
+
+        long startMerge = System.nanoTime();
+        mergeSort(array);
+        for(int i = 0; i < array.length; i++){
+            System.out.print(array[i]+ " ");
+        }
+        System.out.println();
+        long endMerge = System.nanoTime();
+        System.out.println("mergeSort elapsed runtime in nano seconds: " + (endMerge - startMerge));
+    }
+
+    // Implement MergeSort
+    public static <T extends Comparable<T>> void mergeSort(T[] array) {
+        int length = array.length;
+        if (length <= 1) return; // base case
+
+        int middle = length / 2;
+        T[] leftArray = Arrays.copyOfRange(array, 0, middle);
+        T[] rightArray = Arrays.copyOfRange(array, middle, length);
+
+        mergeSort(leftArray);
+        mergeSort(rightArray);
+        merge(leftArray, rightArray, array);
+    }
+
+    // Helper method Merge
+    public static <T extends Comparable<T>> void merge(T[] leftArray, T[] rightArray, T[] array) {
+        int leftSize = leftArray.length;
+        int rightSize = rightArray.length;
+        int i = 0, l = 0, r = 0; // indices
+
+        // check the conditions for merging
+        while (l < leftSize && r < rightSize) {
+            if (leftArray[l].compareTo(rightArray[r]) < 0) {
+                array[i++] = leftArray[l++];
+            } else {
+                array[i++] = rightArray[r++];
+            }
+        }
+        while (l < leftSize) {
+            array[i++] = leftArray[l++];
+        }
+        while (r < rightSize) {
+            array[i++] = rightArray[r++];
+        }
+    }
+
+    // Implement BubbleSort
+    public static <T extends Comparable<T>> void bubbleSort(T[] array) {
+        for (int i = 0; i < array.length - 1; i++) {
+            for (int j = 0; j < array.length - i - 1; j++) {
+                if (array[j].compareTo(array[j + 1]) > 0) {
+                    T temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
+                }
+            }
+        }
+    }
+}
